@@ -1,4 +1,5 @@
 import React from 'react';
+import { nanoid } from 'nanoid';
 import Container from './Container/Container';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
@@ -10,7 +11,22 @@ export class App extends React.Component {
     filter: '',
   };
 
-  AddingContact = contact => {
+  AddingContact = ({ name, number }) => {
+    const { contacts } = this.state;
+    if (contacts.find(item => item.name.toLowerCase() === name.toLowerCase())) {
+      alert(`${name} is already in contacts.`);
+      return;
+    }
+    if (contacts.find(item => item.number === number)) {
+      alert(`${number} is already in contacts.`);
+      return;
+    }
+    const ContactId = nanoid();
+    const contact = {
+      name: name,
+      id: ContactId,
+      number: number,
+    };
     this.setState(({ contacts }) => ({
       contacts: [...contacts, contact],
     }));
@@ -46,7 +62,6 @@ export class App extends React.Component {
         <Container>
           <h1>Phonebook</h1>
           <ContactForm add={this.AddingContact} contacts={contacts} />
-
           <h2>Contacts</h2>
           <Filter value={filter} onChange={this.changeFIlter} />
           <ContactList

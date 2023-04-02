@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { nanoid } from 'nanoid';
+
 import PropTypes from 'prop-types';
 import { AddBtn, Form } from './ContactForm.styled';
 
@@ -23,25 +23,8 @@ export class ContactForm extends Component {
 
     handleFormSubmit = e => {
         e.preventDefault();
-        const ContactId = nanoid();
-        const { name, number } = this.state;
-        const { contacts } = this.props;
 
-        const contact = {
-            name: name,
-            id: ContactId,
-            number: number,
-        };
-
-        if (contacts.find(item => item.name === name)) {
-            alert(`${name} is already in contacts.`);
-            return;
-        } else if (contacts.find(item => item.number === number)) {
-            alert(`${number} is already in contacts.`);
-            return;
-        }
-
-        this.props.add(contact);
+        this.props.add({ ...this.state });
         this.resetForm();
     };
 
